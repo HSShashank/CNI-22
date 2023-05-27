@@ -1,68 +1,63 @@
-# CNI Hackathon 2022
+# CNI HACKATHON 2022
 
-Background
-We have a dataset containing information about the buses travelling in Bengaluru. We have obtained it from Bengaluru Metropolitan Transport Corporation (BMTC).
-The region of interest is an approximately 40km by 40km square area. See the following figure:
+This repository contains the necessary files and instructions to create a model for estimating the travel time between source-destination pairs using a dataset of bus GPS traces.
 
-The data was collected from around two thousand buses for one day, between 7:00am to 7:00pm.
-The buses follow different routes within the city.
-Each bus is identified with a unique ID. A bus carries a device which records the data: latitude, longitude, speed, and timestamp.
-Task
-Create a model to estimate the travel time, in minutes, between source-destination pairs using the provided dataset.
+## Background
 
-Dataset
-We are providing the following three files in the dataset (download link ):
+We have obtained a dataset from the Bengaluru Metropolitan Transport Corporation (BMTC) that contains information about buses traveling in Bengaluru. The dataset includes GPS traces of approximately two thousand buses within an approximately 40km by 40km square area. The data was collected for one day, between 7:00am to 7:00pm. Each bus is identified with a unique ID and carries a device that records latitude, longitude, speed, and timestamp.
 
-BMTC.parquet.gzip: It contains the GPS traces of around two thousand buses.
-Input.csv: It contains geographical coordinates of various sources-destination pairs.
-GroundTruth.csv: It contains the ground truth travel times between the source-destination pairs provided in Input.csv. It is provided to help participants assess their solutions.
-Following is the detailed description of the contents of these files:
-BMTC.parquet.gzip:
-The file contains information in five columns, described as follows:
-BusID: The (unique) ID associated with the device present in a bus.
-Latitude: Latitude (geographical coordinate) of a bus, as recorded by the device.
-Longitude: Longitude (geographical coordinate) of the bus, as recorded by the device.
-Speed: Instantaneous speed of the bus in kmph.
-Timestamp: Timestamp in IST format. The format of datetime is yyyy-mm-dd HH:MM:SS.
-For better understanding, following is a snapshot from the dataset:
+## Task
 
-BusID	Latitude	Longitude	Speed	Timestamp
-0	150212121	13.06593	77.45269	20	2019-08-01 18:59:18
-1	150212121	13.06627	77.45211	27	2019-08-01 18:59:28
-2	150212121	13.06661	77.45152	24	2019-08-01 18:59:38
-3	150212121	13.06697	77.45089	28	2019-08-01 18:59:48
-4	150212121	13.06727	77.45035	26	2019-08-01 18:59:58
-5	150218000	13.00571	77.68619	46	2019-08-01 07:22:33
-6	150218000	13.00525	77.68542	35	2019-08-01 07:22:42
-7	150218000	13.00504	77.68509	0	2019-08-01 07:22:51
-8	150218000	13.00504	77.68509	0	2019-08-01 07:23:01
-9	150218000	13.00498	77.68497	13	2019-08-01 07:23:11
-Note: The devices may not record the data with same sampling intervals. The recordings may also be noisy.
+The task is to create a model that can estimate the travel time, in minutes, between source-destination pairs using the provided dataset.
 
-Input.csv:
-The file contains four columns, described as follows:
-Source_Lat: The latitude of a source.
-Source_Long: The longitude of a source.
-Dest_Lat: The latitude of a destination.
-Dest_Long: The longitude of a destination.
-For better understanding, following is the format of a typical input file:
+## Dataset
 
-Source_Lat	Source_Long	Dest_Lat	Dest_Long
-0	13.067272	77.45035	13.00525	77.68542
-1	13.005042	77.68509	13.06627	77.45211
-2	13.065925	77.45269	13.00498	77.68497
-3	13.005247	77.68542	13.06661	77.45152
-GroundTruth.csv:
-The file contains one column TT, i.e. the actual travel time between a source-destination pair. The value in the i-th row corresponds to the travel time between i-th source-destination pair in Input.csv.
+The dataset consists of the following three files, which can be downloaded using the provided link:
 
-For better understanding, following is the format of a typical ground truth file:
+1. `BMTC.parquet.gzip`: This file contains the GPS traces of around two thousand buses. It includes information about each bus's ID, latitude, longitude, speed, and timestamp.
 
-TT
-0	1.99
-1	6.21
-2	7.34
-3	5.20
-You can use the ground truth from the dataset to check if your code is working well.
+2. `Input.csv`: This file contains geographical coordinates of various source-destination pairs.
 
-Output (Estimated Travel Time)
-Your output will be the estimated travel time (ETT), in minutes, between a given source-destination pair. For each source-destination pair, you should fill this value in the ETT column of a pandas dataframe, as illustrated below:
+3. `GroundTruth.csv`: This file contains the ground truth travel times between the source-destination pairs provided in `Input.csv`. It can be used to assess the performance of the created model.
+
+For a detailed description of the contents of these files, please refer to the dataset documentation.
+
+## Usage
+
+To estimate the travel time between source-destination pairs, follow these steps:
+
+1. Download the dataset files (`BMTC.parquet.gzip`, `Input.csv`, and `GroundTruth.csv`) using the provided download link.
+
+2. Set up the necessary dependencies and libraries, including Python and the required Python packages (e.g., Pandas, NumPy, scikit-learn).
+
+3. Load the dataset files into your program using the appropriate libraries (e.g., Pandas).
+
+4. Train a travel time estimation model using the provided dataset.
+
+5. Evaluate the performance of the model by comparing the estimated travel times with the ground truth travel times from `GroundTruth.csv`.
+
+6. Adjust and refine the model as necessary to improve its accuracy.
+
+7. Use the trained model to estimate travel times for new source-destination pairs by providing the coordinates as input and retrieving the estimated travel time as output.
+
+8. Store the estimated travel times in a Pandas DataFrame with the column name "ETT" (Estimated Travel Time).
+
+## Example DataFrame
+
+Your output should be in the form of a Pandas DataFrame, with the estimated travel times (ETT) filled in the "ETT" column. Here's an example:
+
+```
+   Source_Lat  Source_Long  Dest_Lat  Dest_Long   ETT
+0   13.067272    77.450350  13.00525   77.68542  6.59
+1   13.005042    77.685090  13.06627   77.45211  7.81
+2   13.065925    77.452690  13.00498   77.68497  8.94
+3   13.005247    77.685420  13.06661   77.45152  6.80
+```
+
+Please replace the "ETT" values with your estimated travel times.
+
+## License
+
+The dataset and this project are provided under the [MIT License](LICENSE.md).
+
+Feel free to explore the dataset, create and improve upon the model, and share your insights with the community. Good luck!
